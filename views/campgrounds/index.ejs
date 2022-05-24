@@ -1,0 +1,71 @@
+<% layout('layouts/boilerplate') %>
+    <div id="map" style="height:500px; width:100%"></div>
+    <h1>All Campgrounds</h1>
+    <% for (let campground of campgrounds) { %>
+        <div class="card">
+            <div class="row" mb-3>
+                <div class="col-md-4">
+                    <% if(campground.images.length) {%>
+                        <img src="<%= campground.images[0].url %>" alt="" class="img-fluid">
+                        <% } else { %>
+                            <img src="https://res.cloudinary.com/dnvypcomv/image/upload/v1651880621/yelpCamp/kwhxeavb2zvvumx6qazh.jpg"
+                                alt="" class="img-fluid">
+                            <% } %>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h5>
+                                <%= campground.title %>
+                            </h5>
+                        </div>
+                        <div class="card-text">
+                            <div>
+                                <%= campground.description %>
+                            </div>
+                        </div>
+                        <div class="card-text">
+                            <div>
+                                $<%= campground.price %> per night
+                            </div>
+                        </div>
+                        <small class="text-muted">
+                            <%= campground.location %>
+                        </small>
+                        <div class="in-line">
+                            <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">
+                                Show Campground
+                            </a>
+                            <% if (currentUser && campground.author.equals(currentUser._id)) { %>
+                                <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-info">
+                                    Edit Campground
+                                </a>
+                                <% } %>
+                        </div class="in-line">
+
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <script>
+            const mapToken = '<%- process.env.MAPBOX_TOKEN %>'
+        </script>
+        <script>
+            const campgrounds = { features: '<%- JSON.stringify(campgrounds).replace(/\\n/g,'').replace(/\\r/g,'') %>' }
+        </script>
+        <script src="/javaScript/clusterMap.js"></script>
+
+        <!-- <ul>
+        <% for (let campground of campgrounds) { %>
+            <li>
+                <a href="/campgrounds/<%= campground._id %>">
+                    <%= campground.title %>
+                </a>
+                <a href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
+            </li>
+            <% } %>
+    </ul>
+    <footer>
+        <a href="/campgrounds/new">New Campgrounds</a>
+    </footer> -->
